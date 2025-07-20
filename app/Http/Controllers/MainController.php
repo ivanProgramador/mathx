@@ -40,91 +40,77 @@ class MainController extends Controller
           ]
      );
 
-     //pegando as operações selecionadas 
-     //no caso eu vou criar um array que vai receber a operação dependedo doque vier na requisição
-     //testando aqui eu uso um operador ternario pra testar cada um dos imputs 
-     // se o check_sum vier como checado(selecionado) o primiero indice do array recebe a operação sum 
-     //e assim por diante
+     //buscando as operações selecionadas
+     //No caso eu testo todos os check boxes 
+     //oque tiver valor dentro,esse valor vai se tornar indice do array 
+     //operations ao final dos testes   
 
-     $operations = [];
-     $operations[] = $request->check_sum ? 'sum' : '';
-     $operations[] = $request->check_subtraction ? 'subtraction' : '';
-     $operations[] = $request->check_multiplication ? 'multiplication' : '';
-     $operations[] = $request->check_division ? 'division' : '';
+          $operations = [];
+          $operations[] = $request->check_sum ? 'sum':'';
+          $operations[] = $request->check_subtraction ? 'subtracton':'';
+          $operations[] = $request->check_multiplication ? 'multiplication':'';
+          $operations[] = $request->check_division ? 'division':'';
 
-     //pegando os numeros minimos e maximos 
-
-     $min  = $request->number_one;
-     $max  = $request->number_two;
+     //pegando os numeros minimo e maximo 
      
-     //pegando a quantidade de execicios 
+          $min = $request->number_one;
+          $max = $request->number_two;
 
-     $numberExercises = $request->number_exercises;
+     //pegando a quantidade de exercicios que será gerada 
 
-     //gerando os exercicios 
+          $numberExercises = $request -> number_exercises;
 
-     $exercises = [];
+     //gerando os exercicios
+     //os exercios vão ficar dentro de um array
 
-     for($index = 1; $index <= $numberExercises; $index ++){
+         $exercises = [];
 
-          //a aperação vau receber um indice randomico de dentro array de operações 
+         
+         for($index = 1; $index <= $numberExercises; $index++){
+              
+              
+              $operation = $operations[array_rand($operations)];
+              $number1 = rand($min,$max);
+              $number2 = rand($min,$max);
 
-          $operation = $operations[array_rand($operations)];
-          $number1 = rand($min,$max);
-          $number2 = rand($min,$max);
+              $exercise  =  '';
+              $sollution =  '';
 
-          $exercise = '';
-          $sollution = '';
+              switch($operation){
+                  case 'sum':
+                     $exercise  = " $number1 +  $number2";
+                     $sollution = $number1 +  $number2;
+                  break;
 
-          switch($operation){
+                  case 'subtraction':
+                     $exercise  = " $number1 -  $number2";
+                     $sollution = $number1 -  $number2;
+                  break;
 
-               case 'sum':
-                     $exercise = "$number1 + $number2";
-                     $sollution = $number1 + $number2;
-               break;
+                  case 'multiplication':
+                     $exercise  = " $number1 *  $number2";
+                     $sollution = $number1 *  $number2;
+                  break;
 
-
-               case 'subtraction':
-                     $exercise = "$number1 - $number2";
-                     $sollution = $number1 - $number2;
-               break;
-
-               case 'division':
-                     $exercise = "$number1 : $number2";
-                     $sollution = $number1 / $number2;
-               break;
-
-               case 'multiplication':
-                     $exercise = "$number1 * $number2";
-                     $sollution = $number1 * $number2;
-               break;
-
-                 
-          }
-
-          $exercises[]=[
-
-               'exercises' => $index,
-               'exercise' => $exercise,
-               'sollution' => "$exercise $sollution"
-          ];
-
-          dd($exercises);
-             
+                   case 'division':
+                     $exercise  = " $number1 /  $number2";
+                     $sollution = $number1 /  $number2;
+                  break;
 
 
+              }
 
+              $exercises[] =[
+                 'exercise_number' => $index,
+                 'exercise' => $exercise,
+                 'sollution' =>"$exercise $sollution"
+              ];
 
-     }
+              dd($exercises);
 
+         }
 
-
-
-
-
-     
-       
-    }
+}
 
 
 

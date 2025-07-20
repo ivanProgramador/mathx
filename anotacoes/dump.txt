@@ -2,3 +2,5 @@ Sempre validar dados dentro do servidor , porque o js pode ser desativado e o re
 
 //serve pra verificar oque veio na requisição 
      dd($request->all());
+
+//não usara função dd() no retorno de teste de  dados desse projeto 
