@@ -1,0 +1,13 @@
+o lravelk vem com configurações pre-definidas que eu não preciso usar nesse porjeto por isso 
+alguns arquivos serão apagados, quando menos arquivos desnecessário ficar no projeto melhor. 
+Nota o .env esta fora do ".gitignore" de propósito e para fins didaticos em eum ambiente 
+real isso não deve acontecer.  
+
+Comentei a conexão com a abse de dados porque ela não ser necessaria nesse sistema, 
+os dados serão salvos em arquivo  então no meu env eu escolhi a opção file.
+
+SESSION_DRIVER=file
+
+migrations,seeders froma apagados e o sqllite tambem e comente a referecia dele no env 
+pra não travar o laravel  
+
