@@ -103,10 +103,21 @@
         </div>
 
     </form>
+     {{-- Erros de validação --}}
+
+      <div class="container">
+        <div class="row">
+            <div class="alert alert-danger text-center mt-3">
+                 Você deve selecionar pelo menos uma operação, 
+                 as parcelas devem ficar entre 0 e 99 e o numero de exercícios 
+                 pode ser até 50 
+            </div>
+        </div>
+      </div>
 
     <!-- footer -->
     <footer class="text-center mt-5">
-        <p class="text-secondary">MathX &copy; <span class="text-info">[ANO]</span></p>
+        <p class="text-secondary">MathX &copy; <span class="text-info">{{ date('Y') }}</span></p>
     </footer>
 
     <!-- bootstrap -->

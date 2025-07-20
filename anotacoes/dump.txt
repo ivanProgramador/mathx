@@ -1,0 +1,4 @@
+Sempre validar dados dentro do servidor , porque o js pode ser desativado e o require do html pode ser desabilitado
+
+//serve pra verificar oque veio na requisição 
+     dd($request->all());
