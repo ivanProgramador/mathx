@@ -45,11 +45,12 @@ class MainController extends Controller
      //oque tiver valor dentro,esse valor vai se tornar indice do array 
      //operations ao final dos testes   
 
-          $operations = [];
-          $operations[] = $request->check_sum ? 'sum':'';
-          $operations[] = $request->check_subtraction ? 'subtracton':'';
-          $operations[] = $request->check_multiplication ? 'multiplication':'';
-          $operations[] = $request->check_division ? 'division':'';
+          if($request->check_sum){$operations[]='sum'; }
+          if($request->check_subtraction){$operations[]='subtraction';}
+          if($request->check_multiplication){$operations[]='multiplication';}
+          if($request->check_division){$operations[]='division';}
+
+
 
      //pegando os numeros minimo e maximo 
      
@@ -93,6 +94,12 @@ class MainController extends Controller
                   break;
 
                    case 'division':
+
+                    //evitando divisão por zero 
+                      if($number2 == 0){
+                         $number2 = 1;
+                      }
+
                      $exercise  = " $number1 /  $number2";
                      $sollution = $number1 /  $number2;
                   break;
@@ -100,13 +107,23 @@ class MainController extends Controller
 
               }
 
+
+              //modelando o valor do sollution 
+
+              if(is_float($sollution)){
+                 $sollution = round($sollution,2);
+              }
+
+
+
               $exercises[] =[
+                 'operation'=>$operation,
                  'exercise_number' => $index,
                  'exercise' => $exercise,
                  'sollution' =>"$exercise $sollution"
               ];
 
-              dd($exercises);
+              print_r($exercises);
 
          }
 
