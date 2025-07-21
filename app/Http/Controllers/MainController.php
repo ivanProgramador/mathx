@@ -15,7 +15,8 @@ class MainController extends Controller
 
 
     
-    public function gerarExercicios(Request $request){
+    public function gerarExercicios(Request $request):View
+    {
 
        /* Antes de gerar um excercios eu preciso saber se 
           ele tem uma operação matematica antes, por isso eu 
@@ -79,17 +80,17 @@ class MainController extends Controller
 
               switch($operation){
                   case 'sum':
-                     $exercise  = " $number1 +  $number2";
+                     $exercise  = " $number1 +  $number2 = ";
                      $sollution = $number1 +  $number2;
                   break;
 
                   case 'subtraction':
-                     $exercise  = " $number1 -  $number2";
+                     $exercise  = " $number1 -  $number2 = ";
                      $sollution = $number1 -  $number2;
                   break;
 
                   case 'multiplication':
-                     $exercise  = " $number1 *  $number2";
+                     $exercise  = " $number1 *  $number2 = ";
                      $sollution = $number1 *  $number2;
                   break;
 
@@ -123,9 +124,11 @@ class MainController extends Controller
                  'sollution' =>"$exercise $sollution"
               ];
 
-              print_r($exercises);
+             
 
          }
+
+         return view('operations',['exercises'=>$exercises]);
 
 }
 
