@@ -7,14 +7,11 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    public function home():View
-    
+    public function home():View 
     {
          return view('home');
     }
 
-
-    
     public function gerarExercicios(Request $request):View
     {
 
@@ -81,12 +78,52 @@ class MainController extends Controller
 
          return view('operations',['exercises'=>$exercises]);
 
+    }
+
+
+
+   public function exportExercises()
+{
+    // Verificando se os exercícios estão salvos na sessão
+    if (!session()->has('exercises')) {
+        return redirect()->route('home'); 
+    }
+
+    // Recuperando exercícios da sessão 
+    $exercises = session('exercises');
+
+    // Definindo nome do arquivo com data e hora para evitar sobrescrita
+    $filename = 'exercises_' . env('APP_NAME') . '_' . date('ymdHis') . '.txt';
+
+    // Cabeçalho
+    $content = 'Exercícios de Matemática (' . env('APP_NAME') . ')' . "\n\n";
+
+    // Listagem de exercícios
+    foreach ($exercises as $exercise) {
+        $content .= $exercise['exercise_number'] . ' > ' . $exercise['exercise'] . "\n";
+    }
+
+    // Separador e soluções
+    $content .= "\nSoluções\n" . str_repeat('-', 20) . "\n";
+
+    foreach ($exercises as $exercise) {
+        $content .= $exercise['exercise_number'] . ' > ' . $exercise['sollution'] . "\n";
+    }
+
+    // Retorno como download
+    return response($content)
+        ->header('Content-Type', 'text/plain')
+        ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
 }
 
 
 
 
-     public function printExercises(){
+
+
+    
+    public function printExercises()
+    {
 
          //verificando se os eexecicio estão salvos na sessão
 
@@ -102,7 +139,7 @@ class MainController extends Controller
 
 
          foreach ($exercises as $exercise) {
-            echo'<h2><small>'.str_pad($exercise['exercise_number'],2,0,STR_PAD_LEFT).'>>> </small>'.$exercise['exercise'].'</small></h2>';
+            echo'<h2><small>'.$exercise['exercise_number'].'>>> </small>'.$exercise['exercise'].'</small></h2>';
          }
 
 
@@ -110,17 +147,15 @@ class MainController extends Controller
           echo'<h1> respostas dos exercicios</h1>';
           echo'<hr>';
           foreach ($exercises as $exercise) {
-            echo'<h2 ><small>'.str_pad($exercise['exercise_number'],2,0,STR_PAD_LEFT).'>>> </small>'.$exercise['sollution'].'</small></h2>';
+            echo'<h2 ><small>'.$exercise['exercise_number'].'>>> </small>'.$exercise['sollution'].'</small></h2>';
          }
 
        }
 
-    public function exportExercises(){
-
-         echo 'Exportar execicios para um arquivo de texto ';
-    }
-
-
+   
+   
+   
+     
 
     private function generateExercises($index, $operations,$min,$max):array
     {
@@ -173,7 +208,7 @@ class MainController extends Controller
 
               return [
                  'operation'=>$operation,
-                 'exercise_number' => $index,
+                 'exercise_number' => str_pad($index,2,0,STR_PAD_LEFT),
                  'exercise' => $exercise,
                  'sollution' =>"$exercise $sollution"
               ];
@@ -181,6 +216,12 @@ class MainController extends Controller
       
        
     }
+
+
+
+
+
+
 
 
 }
