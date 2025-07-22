@@ -69,9 +69,63 @@ class MainController extends Controller
 
          
          for($index = 1; $index <= $numberExercises; $index++){
-              
-              
-              $operation = $operations[array_rand($operations)];
+             $exercises[] = $this->generateExercises($index, $operations,$min,$max);
+         }
+
+         //para imprimir eu tenho que guardar os execicio gerador es algum lugar porque
+         // a cada reuisição feita no codigo atual o laravel limpa dos dados
+         // metão como eu não tenho base de dados nesse projeto vou colocar os 
+         //dados na sessão
+         
+         session(["exercises"=>$exercises]);
+
+         return view('operations',['exercises'=>$exercises]);
+
+}
+
+
+
+
+     public function printExercises(){
+
+         //verificando se os eexecicio estão salvos na sessão
+
+         if(!session()->has('exercises')){
+            return redirect()->route('home'); 
+         }
+
+         $exercises = session('exercises');
+
+         echo'<pre>';
+         echo'<h1> Exercios de matemática ('.env('APP_NAME').')</h1>';
+         echo'<hr>';
+
+
+         foreach ($exercises as $exercise) {
+            echo'<h2><small>'.str_pad($exercise['exercise_number'],2,0,STR_PAD_LEFT).'>>> </small>'.$exercise['exercise'].'</small></h2>';
+         }
+
+
+          echo'<hr>';
+          echo'<h1> respostas dos exercicios</h1>';
+          echo'<hr>';
+          foreach ($exercises as $exercise) {
+            echo'<h2 ><small>'.str_pad($exercise['exercise_number'],2,0,STR_PAD_LEFT).'>>> </small>'.$exercise['sollution'].'</small></h2>';
+         }
+
+       }
+
+    public function exportExercises(){
+
+         echo 'Exportar execicios para um arquivo de texto ';
+    }
+
+
+
+    private function generateExercises($index, $operations,$min,$max):array
+    {
+
+       $operation = $operations[array_rand($operations)];
               $number1 = rand($min,$max);
               $number2 = rand($min,$max);
 
@@ -117,32 +171,15 @@ class MainController extends Controller
 
 
 
-              $exercises[] =[
+              return [
                  'operation'=>$operation,
                  'exercise_number' => $index,
                  'exercise' => $exercise,
                  'sollution' =>"$exercise $sollution"
               ];
-
-             
-
-         }
-
-         return view('operations',['exercises'=>$exercises]);
-
-}
-
-
-
-
-     public function imprimirExercicios(){
-
-         echo 'Imprimir execicios no navegador';
-    }
-
-    public function exportarExercicios(){
-
-         echo 'Exportar execicios para um aruivo de texto ';
+      
+      
+       
     }
 
 
